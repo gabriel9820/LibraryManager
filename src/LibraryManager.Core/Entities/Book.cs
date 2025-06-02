@@ -8,6 +8,9 @@ public class Book : BaseEntity
     public int PublicationYear { get; private set; }
     public bool IsAvailable { get; private set; }
 
+    /* Navigation Properties */
+    public List<Loan> Loans { get; private set; } = [];
+
     protected Book() { }
 
     public Book(string title, string author, string isbn, int publicationYear)
