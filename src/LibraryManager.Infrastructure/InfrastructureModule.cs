@@ -1,4 +1,5 @@
 using LibraryManager.Core.Repositories;
+using LibraryManager.Infrastructure.Auth;
 using LibraryManager.Infrastructure.Persistence;
 using LibraryManager.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,8 @@ public static class InfrastructureModule
     {
         services
             .AddLibraryManagerDbContext(configuration)
-            .AddRepositories();
+            .AddRepositories()
+            .AddAuthentication();
 
         return services;
     }
@@ -32,6 +34,13 @@ public static class InfrastructureModule
         services.AddScoped<IBookRepository, BookRepository>();
         services.AddScoped<ILoanRepository, LoanRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddAuthentication(this IServiceCollection services)
+    {
+        services.AddScoped<IAuthService, AuthService>();
 
         return services;
     }
