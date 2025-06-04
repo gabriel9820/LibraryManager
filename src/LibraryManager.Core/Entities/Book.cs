@@ -21,4 +21,13 @@ public class Book : BaseEntity
         PublicationYear = publicationYear;
         IsAvailable = true;
     }
+
+    public void Update(string title, string author, string isbn, int publicationYear, bool isAvailable)
+    {
+        Title = title;
+        Author = author;
+        ISBN = isbn;
+        PublicationYear = publicationYear;
+        IsAvailable = isAvailable;
+    }
 }

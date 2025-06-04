@@ -16,9 +16,13 @@ public class BookRepository : IBookRepository
     public async Task<int> CreateAsync(Book book)
     {
         await _dbContext.Books.AddAsync(book);
-        await _dbContext.SaveChangesAsync();
 
         return book.Id;
+    }
+
+    public void Delete(Book book)
+    {
+        _dbContext.Books.Remove(book);
     }
 
     public async Task<IEnumerable<Book>> GetAllAsync()
@@ -26,5 +30,11 @@ public class BookRepository : IBookRepository
         return await _dbContext.Books
             .AsNoTracking()
             .ToListAsync();
+    }
+
+    public async Task<Book?> GetByIdAsync(int id)
+    {
+        return await _dbContext.Books
+            .SingleOrDefaultAsync(b => b.Id == id);
     }
 }

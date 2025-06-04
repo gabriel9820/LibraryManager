@@ -2,26 +2,26 @@ namespace LibraryManager.Application.Results;
 
 public class Result
 {
-    public bool IsSuccess { get; private set; }
-    public string Message { get; private set; }
+    public bool IsSuccess { get; init; }
+    public Error Error { get; init; }
 
-    public Result(bool isSuccess = true, string message = "")
+    public Result(bool isSuccess = true, Error? error = default)
     {
         IsSuccess = isSuccess;
-        Message = message;
+        Error = error ?? Error.None;
     }
 
     public static Result Success() => new();
-    public static Result Error(string message) => new(false, message);
+    public static Result Failure(Error error) => new(false, error);
 
-    public static implicit operator Result(string message) => new(false, message);
+    public static implicit operator Result(Error error) => new(false, error);
 }
 
 public class Result<T> : Result
 {
-    public T? Data { get; private set; }
+    public T? Data { get; init; }
 
-    public Result(T? data, bool isSuccess = true, string message = "") : base(isSuccess, message)
+    public Result(T? data, bool isSuccess = true, Error? error = null) : base(isSuccess, error)
     {
         Data = data;
     }
@@ -29,5 +29,5 @@ public class Result<T> : Result
     public static Result<T> Success(T data) => new(data);
 
     public static implicit operator Result<T>(T value) => new(value);
-    public static implicit operator Result<T>(string message) => new(default, false, message);
+    public static implicit operator Result<T>(Error error) => new(default, false, error);
 }
