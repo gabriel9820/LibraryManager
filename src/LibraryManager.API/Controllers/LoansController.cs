@@ -1,6 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 namespace LibraryManager.API.Controllers;
 
-public class LoansController
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
+public class LoansController : ControllerBase
 {
 
 }

@@ -4,12 +4,14 @@ using LibraryManager.Application.Commands.UpdateBook;
 using LibraryManager.Application.Queries.GetAllBooks;
 using LibraryManager.Application.Queries.GetBookById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManager.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class BooksController : ControllerBase
 {
     private readonly IMediator _mediator;

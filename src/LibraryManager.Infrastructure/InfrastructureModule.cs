@@ -1,10 +1,13 @@
+using System.Text;
 using LibraryManager.Core.Repositories;
 using LibraryManager.Infrastructure.Auth;
 using LibraryManager.Infrastructure.Persistence;
 using LibraryManager.Infrastructure.Persistence.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LibraryManager.Infrastructure;
 
@@ -15,7 +18,7 @@ public static class InfrastructureModule
         services
             .AddLibraryManagerDbContext(configuration)
             .AddRepositories()
-            .AddAuthentication();
+            .AddAuthentication(configuration);
 
         return services;
     }
@@ -38,9 +41,25 @@ public static class InfrastructureModule
         return services;
     }
 
-    private static IServiceCollection AddAuthentication(this IServiceCollection services)
+    private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IAuthService, AuthService>();
+
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidAudience = configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                };
+            });
 
         return services;
     }
