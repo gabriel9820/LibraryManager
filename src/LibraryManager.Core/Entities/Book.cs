@@ -7,6 +7,7 @@ public class Book : BaseEntity
     public string ISBN { get; private set; }
     public int PublicationYear { get; private set; }
     public bool IsAvailable { get; private set; }
+    public uint RowVersion { get; private set; }
 
     /* Navigation Properties */
     public List<Loan> Loans { get; private set; } = [];
@@ -29,5 +30,15 @@ public class Book : BaseEntity
         ISBN = isbn;
         PublicationYear = publicationYear;
         IsAvailable = isAvailable;
+    }
+
+    public void MarkAsAvailable()
+    {
+        IsAvailable = true;
+    }
+
+    public void MarkAsUnavailable()
+    {
+        IsAvailable = false;
     }
 }

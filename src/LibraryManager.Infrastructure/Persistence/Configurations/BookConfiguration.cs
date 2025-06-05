@@ -29,6 +29,10 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
         builder.Property(b => b.IsAvailable)
             .IsRequired();
 
+        builder.Property(b => b.RowVersion)
+            .HasColumnName("xmin")
+            .IsRowVersion();
+
         builder.HasMany(b => b.Loans)
             .WithOne(l => l.Book)
             .HasForeignKey(l => l.BookId)
