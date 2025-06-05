@@ -1,5 +1,6 @@
 using LibraryManager.Core.Entities;
 using LibraryManager.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManager.Infrastructure.Persistence.Repositories;
 
@@ -17,5 +18,11 @@ public class UserRepository : IUserRepository
         await _dbContext.Users.AddAsync(user);
 
         return user.Id;
+    }
+
+    public async Task<User?> GetByEmailAsync(string email)
+    {
+        return await _dbContext.Users
+            .SingleOrDefaultAsync(u => u.Email == email);
     }
 }

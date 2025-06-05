@@ -19,4 +19,9 @@ public class User : BaseEntity
         PasswordHash = passwordHash;
         Role = role;
     }
+
+    public bool CheckPassword(string hashedPassword)
+    {
+        return PasswordHash == hashedPassword;
+    }
 }
