@@ -23,8 +23,16 @@ public class Loan : BaseEntity
         ReturnDate = null;
     }
 
-    public void ReturnBook()
+    public void MarkAsReturned()
     {
         ReturnDate = DateTime.UtcNow;
+    }
+
+    public int CalculateOverdueDays()
+    {
+        var referenceDate = ReturnDate ?? DateTime.UtcNow;
+        var overdueDays = (referenceDate - ExpectedReturnDate).Days;
+
+        return overdueDays > 0 ? overdueDays : 0;
     }
 }

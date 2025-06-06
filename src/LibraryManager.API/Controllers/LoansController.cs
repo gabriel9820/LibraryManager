@@ -1,4 +1,5 @@
 using LibraryManager.Application.Commands.CreateLoan;
+using LibraryManager.Application.Commands.ReturnLoan;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,5 +29,19 @@ public class LoansController : ControllerBase
         }
 
         return Created();
+    }
+
+    [HttpPatch("{id:int}/return")]
+    public async Task<IActionResult> Return(int id)
+    {
+        var command = new ReturnLoanCommand(id);
+        var result = await _mediator.Send(command);
+
+        if (!result.IsSuccess)
+        {
+            return StatusCode(result.Error.Code, result.Error.Description);
+        }
+
+        return Ok(result.Data);
     }
 }

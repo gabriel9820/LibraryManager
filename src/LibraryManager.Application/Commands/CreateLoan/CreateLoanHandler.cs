@@ -44,7 +44,7 @@ public class CreateLoanHandler : IRequestHandler<CreateLoanCommand, Result<int>>
         }
         catch (DbUpdateConcurrencyException)
         {
-            return BookErrors.BookConcurrencyConflict;
+            return LoanErrors.LoanConcurrencyConflict;
         }
 
         return id;

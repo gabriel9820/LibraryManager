@@ -1,5 +1,6 @@
 using LibraryManager.Core.Entities;
 using LibraryManager.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManager.Infrastructure.Persistence.Repositories;
 
@@ -17,5 +18,12 @@ public class LoanRepository : ILoanRepository
         await _dbContext.Loans.AddAsync(loan);
 
         return loan.Id;
+    }
+
+    public async Task<Loan?> GetByIdAsync(int id)
+    {
+        return await _dbContext.Loans
+            .Include(l => l.Book)
+            .SingleOrDefaultAsync(l => l.Id == id);
     }
 }
